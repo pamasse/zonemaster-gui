@@ -15,7 +15,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e --port=4201",
     "check-dep": "david",
-    "release": "dotenv release-it"
+    "release": "dotenv release-it --no-git.requireUpstream"
     },
   "lint-staged": {
     "*.{ts,js,json,md,scss,html}": [
