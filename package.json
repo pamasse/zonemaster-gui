@@ -1,17 +1,22 @@
 {
   "name": "zonemaster-gui",
   "version": "3.1.0",
-  "license": "MIT",
+  "license": "MIT",  
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pamasse/zonemaster-gui.git"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "node scripts/faq.js && ng build --prod",
-    "release": "npm run build && node scripts/create_release.js",
+    "build:release": "npm run build && node scripts/create_release.js",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e --port=4201",
-    "check-dep": "david"
-  },
+    "check-dep": "david",
+    "release": "dotenv release-it"
+    },
   "lint-staged": {
     "*.{ts,js,json,md,scss,html}": [
       "prettier --config .prettierrc --write"
@@ -28,6 +33,13 @@
       "commit-msg": "commitlint --config commitlint.config.js -E HUSKY_GIT_PARAMS",
       "pre-commit": "lint-staged && ng lint",
       "post-merge": "post-npm-install"
+    }
+  },  
+  "release-it": {
+    "github": {
+      "release": true,
+      "draft": true,
+      "assets": ["./*.zip"]
     }
   },
   "private": false,
@@ -71,6 +83,7 @@
     "codelyzer": "^5.0.1",
     "commitlint": "^8.3.5",
     "david": "^12.0.0",
+    "dotenv-cli": "^3.1.0",
     "husky": "^4.2.5",
     "jasmine-core": "^3.5.0",
     "jasmine-spec-reporter": "^5.0.1",
@@ -88,6 +101,7 @@
     "pretty-quick": "^2.0.1",
     "protractor": "^5.4.2",
     "protractor-image-comparison": "^3.6.0",
+    "release-it": "^13.5.5",
     "stylelint": "^13.3.3",
     "ts-node": "^8.4.1",
     "tslint": "^6.1.1",
