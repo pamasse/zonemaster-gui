@@ -87,7 +87,9 @@ The script also change the FAQ markdown files to html files.
 
 ##### Create a release zip file
 
-Run 'npm run release' to create a zip file with dist folder and zonemaster.conf file. Then upload it in github.
+In order to publish new release with this script, you need to rename '.env.example' to '.env' and then put a [personal_access_tokens](https://gitlab.com/profile/personal_access_tokens) (repo access) into it as GITHUB_TOKEN.
+Run 'npm run release' to create a zip file with dist folder and zonemaster.conf file.
+This file is then uploaded on github as a new draft release.
 
 ### Documentation
 
