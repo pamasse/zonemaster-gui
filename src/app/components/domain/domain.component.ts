@@ -41,7 +41,6 @@ export class DomainComponent implements OnInit {
         });
       }
     }, error => {
-      console.log(error);
       this.translateService.get('Error during parent data fetching').subscribe((res: string) => {
         this.alertService.error(res);
       });

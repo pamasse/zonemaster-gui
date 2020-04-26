@@ -38,6 +38,7 @@ import { HttpRequestInterceptor } from './interceptors/request.interceptor';
 import { HttpMockRequestInterceptor } from './interceptors/mock.interceptor';
 
 export const isMock = environment.mock;
+export const isProd = environment.production;
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -90,7 +91,9 @@ const appRoutes: Routes = [
     }),
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: false } // <-- debugging purposes only
+      { 
+        enableTracing: !isProd 
+      } // <-- debugging purposes only
     ),
     MomentModule
   ],

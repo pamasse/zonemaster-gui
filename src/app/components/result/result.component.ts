@@ -62,7 +62,6 @@ export class ResultComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.language = this.translateService.currentLang;
-    console.log(this.resultID);
 
     // Le result ID ne passe pas par la lorsque domaine.ts change une seconde fois l'ID !!!
     if (this.directAccess) {
@@ -91,11 +90,7 @@ export class ResultComponent implements OnInit, OnChanges {
   }
 
   public openModal(content) {
-    this.modalService.open(content).result.then((result) => {
-      console.log(result)
-    }, (reason) => {
-      console.log(reason);
-    });
+    this.modalService.open(content).result.then((result) => {}, (reason) => {});
   }
 $
 

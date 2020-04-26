@@ -58,11 +58,9 @@ export class HttpMockRequestInterceptor implements HttpInterceptor {
         && request.body.method === element.body.method
         && JSON.stringify(request.body.params) === JSON.stringify(element.body.params)
       ) {
-        console.log('Loaded from json: ' + request.body.method );
         return of(new HttpResponse({ status: 200, body: element.json }));
       }
     }
-    console.log('Loaded from http call :' + request.url);
     return next.handle(request);
   }
 }

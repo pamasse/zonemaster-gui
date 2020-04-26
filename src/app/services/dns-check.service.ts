@@ -95,12 +95,10 @@ export class DnsCheckService {
   }
 
   public getProfileNames(): string[] {
-    console.log('getProfiles')
     return this._profiles;
   }
 
   public setProfileNames(profiles: string[]): void {
-    console.log('setProfil')
     this._profiles = profiles;
   }
 }
