@@ -39,6 +39,7 @@
     "github": {
       "release": true,
       "draft": true,
+      "requireBranch": "develop",
       "assets": ["./*.zip"]
     }
   },
