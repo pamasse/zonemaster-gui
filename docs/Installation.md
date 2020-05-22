@@ -24,36 +24,43 @@ This instruction covers the following operating systems:
 
  1. [CentOS](#1-centos)
  2. [Debian](#2-debian)
- 4. [FreeBSD](#4-freebsd)
- 5. [Ubuntu](#5-ubuntu)
+ 3. [FreeBSD](#3-freebsd)
+ 4. [Ubuntu](#4-ubuntu)
 
 
 ### 1. CentOS
 
-* Install Httpd (Apache):
+* Install Httpd (Apache), if it is not installed:
 
 ```sh
 sudo yum update
 sudo yum install httpd
 ```
 
-* Install Zonemaster Web GUI
+#### Install Zonemaster Web GUI
+
 ```sh
-wget https://github.com/zonemaster/zonemaster-gui/releases/download/v3.1.0/zonemaster_web_gui.zip -O zonemaster_web_gui.zip
+wget https://github.com/zonemaster/zonemaster-gui/releases/download/v3.2.0/zonemaster_web_gui.zip -O zonemaster_web_gui.zip
 sudo mkdir -p  /var/www/html/zonemaster-web-gui
 sudo mkdir -p /var/log/zonemaster
 sudo unzip -d /var/www/html/zonemaster-web-gui zonemaster_web_gui.zip
 rm zonemaster_web_gui.zip
 ```
 
-* Basic httpd configuration:
+#### Basic httpd configuration
 
 ```sh
 sudo install /var/www/html/zonemaster-web-gui/zonemaster.conf-example /etc/httpd/conf.d/zonemaster.conf
 ```
 Then update the zonemaster.conf file with your own ServerName, ServerAlias, ServerAdmin
 
-* Reload httpd
+* Start  httpd if it is newly installed
+```sh
+sudo systemctl enable httpd
+sudo systemctl start httpd
+```
+
+* Else, Reload httpd
 ```sh
 sudo systemctl enable httpd
 sudo systemctl reload httpd
@@ -61,33 +68,29 @@ sudo systemctl reload httpd
 
 ### 2. Debian
 
-Install apache2:
+#### Install apache2 and disable default site
 
 ```sh
 sudo apt-get update && sudo apt-get upgrade -y 
-sudo apt-get install apache2
+sudo apt-get install apache2 unzip
 sudo a2enmod proxy
 sudo a2enmod proxy_http
 sudo a2enmod rewrite
+sudo a2dissite 000-default
 sudo systemctl restart apache2
 ```
 
-* Install Zonemaster Web GUI
+#### Install Zonemaster Web GUI
+
 ```sh
-wget https://github.com/zonemaster/zonemaster-gui/releases/download/v3.1.0/zonemaster_web_gui.zip -O zonemaster_web_gui.zip
+wget https://github.com/zonemaster/zonemaster-gui/releases/download/v3.2.0/zonemaster_web_gui.zip -O zonemaster_web_gui.zip
 sudo mkdir -p  /var/www/html/zonemaster-web-gui
 sudo mkdir -p /var/log/zonemaster
 sudo unzip -d /var/www/html/zonemaster-web-gui zonemaster_web_gui.zip
 rm zonemaster_web_gui.zip
 ```
 
-If `unzip` is not already installed, then install it with the following command 
-and go back and run it again above:
-```sh
-sudo apt-get install unzip
-```
-
-* Basic apache2 configuration:
+#### Basic apache2 configuration
 
 ```sh
 sudo chown -R www-data:www-data /var/www #Change owner of the directory 
@@ -100,60 +103,70 @@ For testing on a local machine, you can edit zonemaster.conf and change the "*:8
 to the host's IP or using localhost as ServerName if that is appropriate.
 
 
-* Reload apache
+#### Reload apache
 
 ```sh
 sudo systemctl enable apache2
 sudo systemctl reload apache2
 ```
 
-### 4. FreeBSD
+### 3. FreeBSD
 
-* For all commands below become root:
+For all commands below become root:
 
 ``su -l``
 
-* Install Apache (see [tutorial on Apache on FreeBSD]) and its dependencies:
+#### Install Apache and its dependencies
+
+See [tutorial on Apache on FreeBSD].
 
 ``pkg install apache24``
 
 Enter ``y`` at the confirmation prompt.
 
-* Enable Apache as a service:
+#### Enable Apache as a service
 
 ``sysrc apache24_enable=yes``
  
-* Enable three apache modules in Apache configuration file:
+#### Enable three apache modules in Apache configuration file
 
 ``perl -pi -e 's/^#(LoadModule (proxy_module|proxy_http_module|rewrite_module) libexec)/$1/' /usr/local/etc/apache24/httpd.conf``
 
-* Start Apache:
+#### Start Apache
  
 ``service apache24 start``
 
-* Install Zonemaster Web GUI
+If you want Apache to listen to an external IP address and it says that it only
+listens to localhost (127.0.0.1/::1) then you have to set `ServerName` in
+`/usr/local/etc/apache24/httpd.conf`, e.g.
+``ServerName 192.0.2.246:80``
+
+#### Install Zonemaster Web GUI
+
 ```sh
-fetch https://github.com/zonemaster/zonemaster-gui/releases/download/v3.1.0/zonemaster_web_gui.zip
+fetch https://github.com/zonemaster/zonemaster-gui/releases/download/v3.2.0/zonemaster_web_gui.zip
 mkdir -p /var/www/html/zonemaster-web-gui
 mkdir -p /var/log/zonemaster
 unzip -d /var/www/html/zonemaster-web-gui zonemaster_web_gui.zip 
 rm zonemaster_web_gui.zip 
 ```
 
-* Basic Apache configuration:
+#### Basic Apache configuration
 
 ```sh
 install /var/www/html/zonemaster-web-gui/zonemaster.conf-example /usr/local/etc/apache24/Includes/zonemaster.conf
 ```
-Then update the zonemaster.conf file with your own ServerName, ServerAlias, ServerAdmin
+Then update `/usr/local/etc/apache24/Includes/zonemaster.conf` with your own ServerAdmin.
+If Zonemaster-Backend RPCAPI runs on another server or on another port (not port 5000)
+then update IP address or port in the same file.
 
 
-* Restart Apache
+#### Restart Apache
 ```sh
 service apache24 restart
 ```
 
-### 5. Ubuntu
+### 4. Ubuntu
 
 Use the procedure for installation on [Debian](#2-debian).
 
@@ -173,14 +186,15 @@ And when the mouse over this text, it display all version of the zonemaster stac
  * For a JSON-RPC API, see the Zonemaster::Backend [JSON-RPC API] documentation.
  * For a command line interface, follow the [Zonemaster::CLI installation] instruction.
  * For a Perl API, see the [Zonemaster::Engine API] documentation.
- * For Https, see [Let's Encrypt / Certbot](https://certbot.eff.org/all-instructions/)
+ * For Https, see [Let's Encrypt / Certbot].
 
 -------
 
-[tutorial on Apache on FreeBSD]: https://www.digitalocean.com/community/tutorials/how-to-install-an-apache-mysql-and-php-famp-stack-on-freebsd-10-1
 [Declaration of prerequisites]: https://github.com/zonemaster/zonemaster/blob/master/README.md#prerequisites
 [JSON-RPC API]: https://github.com/zonemaster/zonemaster-backend/blob/master/docs/API.md
+[Let's Encrypt / Certbot]: https://certbot.eff.org/all-instructions/
 [Main Zonemaster repository]: https://github.com/zonemaster/zonemaster/blob/master/README.md
+[Tutorial on Apache on FreeBSD]: https://www.digitalocean.com/community/tutorials/how-to-install-an-apache-mysql-and-php-famp-stack-on-freebsd-10-1
 [Zonemaster::Backend installation]: https://github.com/zonemaster/zonemaster-backend/blob/master/docs/Installation.md
 [Zonemaster::Backend]: https://github.com/zonemaster/zonemaster-backend/blob/master/README.md
 [Zonemaster::CLI installation]: https://github.com/zonemaster/zonemaster-cli/blob/master/docs/Installation.md
