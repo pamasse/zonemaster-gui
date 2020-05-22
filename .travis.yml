@@ -11,5 +11,6 @@ before_script:
   - npm install -g @angular/cli
 
 script:
-- ng lint
-- ng build --prod --base-href https://pamasse.github.io/zonemaster-gui/
+  - ng lint
+  - npm run test-headless
+  - ng build --prod --base-href https://pamasse.github.io/zonemaster-gui/
