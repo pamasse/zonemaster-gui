@@ -41,7 +41,6 @@ deploy:
     local_dir: dist/
     on:
       branch: travis_ci_cd
-
   - provider: releases
     github_token: $GITHUB_TOKEN
     file: "zonemaster_web_gui.zip"
