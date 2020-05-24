@@ -28,8 +28,8 @@ before_script:
 script:
   # - npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
   # - npm run e2e -- --protractor-config=./protractor.conf.js
-  - npm run build:github_page
   - npm run build:release
+  - npm run build:github_page
 
 before_deploy:
   - export RELEASE_TITLE=$(date '+%Y%m%d%H%M%S')-$TRAVIS_JOB_NUMBER-$TRAVIS_TAG
@@ -41,13 +41,14 @@ deploy:
     local_dir: dist/
     on:
       branch: travis_ci_cd
+
   - provider: releases
     github_token: $GITHUB_TOKEN
     file: "zonemaster_web_gui.zip"
+    # name: $RELEASE_TITLE
+    # body: "Bla bla bla this is a test :)"
     skip_cleanup: true
     draft: true
-    name: $RELEASE_TITLE
-    body: "Bla bla bla this is a test :)"
     on:
       branch: travis_ci_cd
       tags: true
