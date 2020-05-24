@@ -29,6 +29,7 @@ exports.config = {
         '--disk-cache-dir=/dev/null',
         '--disable-web-security',
         '--window-size=1920,1080',
+        '--no-sandbox',
         'lang=es-AR'
       ]
     }
