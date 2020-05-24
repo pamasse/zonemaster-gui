@@ -28,7 +28,7 @@ before_script:
 script:
   - npm run test -- --no-watch --no-progress --browsers=ChromeHeadlessCI
   - npm run e2e -- --protractor-config=./protractor.conf.js
-  - npm run deploy:github_page
+  - npm run build:github_page
 
 
 deploy:

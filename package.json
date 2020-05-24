@@ -10,7 +10,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e --port=4201",
-    "deploy:github_page": "ng build --prod --base-href https://pamasse.github.io/zonemaster-gui/"
+    "build:github_page": "ng build --prod --base-href https://pamasse.github.io/zonemaster-gui/"
   },
   "private": false,
   "dependencies": {
