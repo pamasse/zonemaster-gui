@@ -1,0 +1,133 @@
+<h1>Zonemaster</h1>
+<ol>
+<li><a href="/faq#q1">What is Zonemaster?</a></li>
+<li><a href="/faq#q2">Who is behind Zonemaster?</a></li>
+<li><a href="/faq#q3">How can Zonemaster help me?</a></li>
+<li><a href="/faq#q4">Zonemaster returns "Error" or "Warning" on my domain. What does it mean?</a></li>
+<li><a href="/faq#q5">How can Zonemaster judge what is right and wrong?</a></li>
+<li><a href="/faq#q6">Does Zonemaster handle IPv6?</a></li>
+<li><a href="/faq#q7">Does Zonemaster handle DNSSEC?</a></li>
+<li><a href="/faq#q8">What makes Zonemaster differ from other DNS zone validating software?</a></li>
+<li><a href="/faq#q9">Zonemaster and privacy</a></li>
+<li><a href="/faq#q10">How come I cannot test my domain?</a></li>
+<li><a href="/faq#q11">What kind of queries does Zonemaster generate?</a></li>
+<li><a href="/faq#q12">What is an undelegated domain test?</a></li>
+<li><a href="/faq#q13">How can I test a reverse zone with Zonemaster?</a></li>
+</ol>
+<h2>Zonemaster</h2>
+<h4>1. What is Zonemaster? <a name="q1"></a></h4>
+<p>Zonemaster is a program that was designed to help people check, measure and
+hopefully also understand how DNS (Domain Name System) works.</p>
+<p>It consists of four basic parts:</p>
+<ol>
+<li>Engine - a test framework that supports all functionality to perform DNS tests.</li>
+<li>The CLI interface to the Engine.</li>
+<li>Backend, a server that allows you to run Zonemaster tests and save results using
+ a JSON-RPC API and a database.</li>
+<li>GUI - a web interface to the backend.</li>
+</ol>
+<p>When a domain (such as "zonemaster.net") is submitted to Zonemaster (CLI or
+GUI) it will investigate the domain’s general health by traversing the DNS from root
+(.) via the TLD (Top Level Domain, like .net) to the nameserver(s) that hosts
+the information about the specific domain (zonemaster.net). The different sanity checks
+conducted by the Zonemaster tool is documented in the <a href="https://github.com/zonemaster/zonemaster/blob/master/docs/requirements/TestRequirements.md">Test Requirements
+document</a>.</p>
+<h4>2. Who is behind Zonemaster? <a name="q2"></a></h4>
+<p>Zonemaster is a joint project between <a href="https://www.afnic.fr/en/">Afnic</a>
+(registry operator of .fr TLD and several other
+TLDs, e.g. .re, .pm, .tf, .wf, .yt and .paris) and
+<a href="https://internetstiftelsen.se/en/">The Swedish Internet Foundation</a>
+(registry
+operator of .se and .nu TLDs).</p>
+<h4>3. How can Zonemaster help me? <a name="q3"></a></h4>
+<p>The Zonemaster tool is oriented towards two user categories:</p>
+<ul>
+<li>Users who are knowledgable about the DNS protocol.</li>
+<li>Users who just want to know whether the the domains owned or used by them
+have any issues or not.</li>
+</ul>
+<p>Users of the second category should contact their DNS operator
+as soon as they get the results other than "green" for any
+test of their domain name.</p>
+<h4>4. Zonemaster returns "Error" or "Warning" for my domain. What does it mean? <a name="q4"></a></h4>
+<p>It depends on which test failed for your domain.</p>
+<h4>5. How can Zonemaster judge what is right and wrong? <a name="q5"></a></h4>
+<p>There is no final judgement of the health of a domain that can be bestowed by
+anyone. The people behind Zonemaster do not claim that the tool is correct in
+every aspect. Sometimes opinions differ. We have done our very best to create a
+default policy for found errors within
+this project. Hopefully this is a good compromise between what is an actual
+potentially dangerous error and what could be merely seen as a notice or warning.
+The added advantage of the tool is that one can add a policy file suited to
+one's necessity to a specified directory and ask the tool to use that policy
+file when running the tests.
+But as with all things as evolving as DNS the situation is most likely
+changing, what is a notice today could be an error tomorrow. If you really think
+we have made a mistake in our judgement please do not hesitate to drop us an email
+at zonemaster-devel@lists.iis.se with a link to your test and an explanation why you think it
+shows something that you consider incorrect.</p>
+<h4>6. Does Zonemaster handle IPv6? <a name="q6"></a></h4>
+<p>Yes, it does. All tests run over IPv4 will also be run over IPv6 if Zonemaster
+is configured to do so.</p>
+<h4>7. Does Zonemaster handle DNSSEC? <a name="q7"></a></h4>
+<p>Yes, if DNSSEC is available for a domain that is tested by Zonemaster, it will be
+checked automatically.</p>
+<h4>8. What makes Zonemaster differ from other DNS zone validating software? <a name="q8"></a></h4>
+<p>Firstly, Zonemaster saves all history from earlier tests based on the tested
+domain, which means you can go back to a test you did a week ago and compare it
+to the test you ran a moment ago.</p>
+<p>All tests that Zonemaster runs are defined in test case specifications that
+are linked from <a href="https://github.com/zonemaster/zonemaster/blob/master/docs/requirements/TestRequirements.md">Test Requirements
+document</a></p>
+<p>Zonemaster could be used to test undelegated domains. More about undelegated
+domains in <a href="/faq#q12">Question 12</a>.</p>
+<p>Lastly, this open source version of Zonemaster was built using modular code
+which, basically, means you can use parts of it in your systems, if you would want
+to. It is quite rare that you'd want a complete program just to check for example
+redelegations.</p>
+<h4>9. Zonemaster and privacy <a name="q9"></a></h4>
+<p>Since Zonemaster is open to everyone it is possible for anyone to check your
+domain and also see previous tests, however there is no way to tell
+who has run a specific test since nothing is logged except the time of the test.</p>
+<h4>10. How come I cannot test my domain? <a name="q10"></a></h4>
+<p>If we disregard the situation where the domain does not exist, as in when you input a
+non-existing domain to Zonemaster, there are 2 other possibilites:</p>
+<ul>
+<li>To protect the engine from multiple identical inputs, that is the same IP
+checking the same zone several times, there is a delay of 5 minutes between
+identical subsequent tests. This means that you can only test the
+same domain once every 5 minutes, if you try and test it again within 5 minutes
+the last results will be displayed instead.</li>
+<li>Because Zonemaster was made to check domains or DNS zones, like zonemaster.net, and
+not hostnames in a domain (zone), like www.zonemaster.net, the Zonemaster will
+report a failure if you try to test a host name instead of a domain matching a
+DNS zone.</li>
+</ul>
+<h4>11. What kind of queries does Zonemaster generate? <a name="q11"></a></h4>
+<p>Zonemaster send multiple DNS queries to the name servers hosting the domain name and
+also to the name servers hosting the parent zone of the domain name.</p>
+<p>To get a full
+view of what queries and results are generated you can run the
+CLI interface (and in order to run the CLI interface you need to download the
+complete package and install it) and select full output.
+The output from the CLI tool is quite heavily technical
+so unless you are into bits and bytes you might want to skip this step.</p>
+<h4>12. What is an undelegated domain test? <a name="q12"></a></h4>
+<p>An undelegated domain test is a test performed on a domain that may, or may not,
+be fully published in the DNS. This can be quite useful if one is going to move
+one's domain from one registrar to another,
+e.g., move zone example.com from the nameserver
+"ns.example.com" to the nameserver "ns.example.org". In this scenario one could perform
+an undelegated domain test providing the zone (example.com) and the nameserver you are moving to
+(ns.example.org) <em>before</em> you move your domain.
+When the results of the test are colour coded in green one can be fairly certain
+that the domain's new location is working well. However there
+might still be other problems in the zone data itself that this test is unaware of.</p>
+<h4>13. How can I test a "reverse" zone with Zonemaster? <a name="q13"></a></h4>
+<p>To check a reverse zone with Zonemaster one need to first know what the
+reverse zone is. If you want to check the reverse zone, you have to enter
+it in the format that it has in DNS, e.g.:</p>
+<ul>
+<li>3.2.1.in-addr.arpa</li>
+<li>6.0.1.0.0.2.ip6.arpa</li>
+</ul>
