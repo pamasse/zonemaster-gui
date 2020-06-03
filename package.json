@@ -10,7 +10,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e --port=4201",
     "build:release": "npm run build && node scripts/create_release.js",
-    "build:github_page": "npm run build -- --base-href https://pamasse.github.io/zonemaster-gui/"
+    "build:github_page": "ng build -- --base-href https://pamasse.github.io/zonemaster-gui/"
   },
   "private": false,
   "dependencies": {
